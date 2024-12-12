@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">
+            <span class="poop-icon">💩</span>
+            Welcome to Poop Tracker!
+        </h1>
+        <p class="lead mb-4">
+            Track your family's bathroom habits with our fun and easy-to-use app!
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Get Started</h2>
+                <div class="d-grid gap-3 col-md-6 mx-auto">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                        Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <h3>Features</h3>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4>👨‍👩‍👧‍👦</h4>
+                            <h5>Family Profiles</h5>
+                            <p>Track multiple family members in one place</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4>📅</h4>
+                            <h5>Calendar View</h5>
+                            <p>See patterns at a glance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4>⚠️</h4>
+                            <h5>Health Alerts</h5>
+                            <p>Get notified of potential issues</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

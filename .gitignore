@@ -1,0 +1,5 @@
+venv/
+__ignore/
+instance/
+
+app_requirement.md
