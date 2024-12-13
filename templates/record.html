@@ -87,11 +87,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
+                        <input type="date" class="form-control" id="date" name="date" required value="{{ now.strftime('%Y-%m-%d') }}">
                     </div>
                     <div class="mb-3">
                         <label for="time" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="time" name="time" required>
+                         <input type="time" class="form-control" id="time" name="time" required value="{{ now.strftime('%H:%M') }}">
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">Save Record</button>

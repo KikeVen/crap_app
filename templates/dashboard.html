@@ -58,7 +58,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for record in member.records|sort(attribute='timestamp', reverse=True) %}
+                                        {% for record in member.records %}
                                             <tr>
                                                 <td>{{ record.timestamp.strftime('%Y-%m-%d') }}</td>
                                                 <td>{{ record.timestamp.strftime('%H:%M') }}</td>

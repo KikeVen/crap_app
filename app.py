@@ -158,7 +158,7 @@ def record(member_id):
     if member.parent != current_user:
         flash('Access denied')
         return redirect(url_for('dashboard'))
-
+    now = datetime.utcnow()
     if request.method == 'POST':
         poop_type = request.form.get('poop_type')
         date_str = request.form.get('date')
@@ -179,9 +179,9 @@ def record(member_id):
                 return redirect(url_for('dashboard'))
             except ValueError:
                 flash('Invalid date or time format')
-                return render_template('record.html', member=member)
+                return render_template('record.html', member=member, now=now)
         flash('Please select a poop type, date and time')
-    return render_template('record.html', member=member)
+    return render_template('record.html', member=member, now=now)
 
 
 if __name__ == '__main__':
