@@ -96,7 +96,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [ ] New UI design and theme
 - [ ] Calendar view of records
 - [ ] More detailed information on each stool type
-- [ ] Additional data visualizations
+- [ ] Additional data visualizations (charts)
 - [ ] Ability to export records as CSV, PDF
 
 ## License
