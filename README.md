@@ -42,6 +42,8 @@ cd poop-tracker
 
 1. Create and activate a virtual environment:
 
+I am currently using `3.10`
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use: venv\Scripts\activate
