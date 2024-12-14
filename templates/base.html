@@ -31,6 +31,14 @@
             color: white !important;
         }
 
+        .navbar-toggler {
+            background-color: var(--grullo);
+        }
+
+        .navbar-toggler[aria-expanded="true"] {
+            background-color: var(--grullo);
+        }
+
         .card {
             background-color: white;
             border-radius: 15px;
@@ -49,6 +57,11 @@
             border-color: #989666;
         }
 
+        .btn-primary:active:focus {
+            background-color: #989666;
+            border-color: #989666;
+        }
+
         .btn-outline-primary {
             color: var(--grullo);
             border-color: var(--grullo);
@@ -59,8 +72,29 @@
             border-color: #989666;
         }
 
+        .btn-outline-primary:active:focus {
+            background-color: #5a5937;
+            border-color: #989666;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--dark-teal)  !important;
+            border: var(--dark-teal);
+        }
+
+        .form-check-input:active {
+            background-color: #963A2F  !important;
+            border: #963A2F;
+        }
+
         .alert {
-            border-radius: 15px;
+            /* border-radius: 15px; */
+            border-left-color: #963A2F;
+            border-left-width: 3px;
+            border-right: 0;
+            border-bottom: 0;
+            border-top: 0;
+            background-color: #ffeddb;
         }
 
         .poop-icon {
@@ -94,7 +128,7 @@
             </a>
             {% if current_user.is_authenticated %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
