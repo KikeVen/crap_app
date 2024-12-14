@@ -11,75 +11,89 @@
                 </h2>
                 <form method="POST">
                     <div class="mb-4">
-                        <label class="form-label">Select Poop Type (Bristol Stool Scale)</label>
+                        <label class="form-label d-flex flex-column align-items-center">Select Poop Type (Bristol Stool Scale)</label>
                         <div class="row g-3">
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type1" value="Type 1 - Separate hard lumps" required>
-                                    <label class="form-check-label" for="type1">
-                                        <h6>Type 1</h6>
-                                        Separate hard lumps 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type1">
+                                        <h4>Type 1</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_1.png') }}" alt="Type 1">
+                                        <br>
+                                        Separate hard lumps
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type2" value="Type 2 - Lumpy and sausage-like">
-                                    <label class="form-check-label" for="type2">
-                                        <h6>Type 2</h6>
-                                        Lumpy and sausage-like 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type2">
+                                        <h4>Type 2</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_2.png') }}" alt="Type 2">
+                                        <br>
+                                        Lumpy and sausage-like
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type3" value="Type 3 - Sausage with cracks">
-                                    <label class="form-check-label" for="type3">
-                                        <h6>Type 3</h6>
-                                        Sausage with cracks 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type3">
+                                        <h4>Type 3</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_3.png') }}" alt="Type 3">
+                                        <br>
+                                        Sausage with cracks
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type4" value="Type 4 - Smooth and soft">
-                                    <label class="form-check-label" for="type4">
-                                        <h6>Type 4</h6>
-                                        Smooth and soft 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type4">
+                                        <h4>Type 4</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_4.png') }}" alt="Type 4">
+                                        <br>
+                                        Smooth and soft
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type5" value="Type 5 - Soft blobs">
-                                    <label class="form-check-label" for="type5">
-                                        <h6>Type 5</h6>
-                                        Soft blobs 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type5">
+                                        <h4>Type 5</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_5.png') }}" alt="Type 5">
+                                        <br>
+                                        Soft blobs
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type6" value="Type 6 - Mushy consistency">
-                                    <label class="form-check-label" for="type6">
-                                        <h6>Type 6</h6>
-                                        Mushy consistency 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type6">
+                                        <h4>Type 6</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_6.png') }}" alt="Type 6">
+                                        <br>
+                                        Mushy consistency
                                     </label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-check card p-3">
-                                    <input class="form-check-input" type="radio" name="poop_type" 
+                                    <input class="form-check-input" type="radio" name="poop_type"
                                            id="type7" value="Type 7 - Entirely liquid">
-                                    <label class="form-check-label" for="type7">
-                                        <h6>Type 7</h6>
-                                        Entirely liquid 💩
+                                    <label class="form-check-label d-flex flex-column align-items-center" for="type7">
+                                        <h4>Type 7</h4>
+                                        <img class="responsive-img" style="height: 70px;" src="{{ url_for('static', filename='images/type_7.png') }}" alt="Type 7">
+                                        <br>
+                                        Entirely liquid
                                     </label>
                                 </div>
                             </div>

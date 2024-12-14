@@ -1,5 +1,7 @@
 venv/
 __ignore/
 instance/
+static/
 
 app_requirement.md
+.gitignore
