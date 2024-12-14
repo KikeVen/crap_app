@@ -61,7 +61,7 @@
                                         {% for record in member.records %}
                                             <tr>
                                                 <td>{{ record.timestamp.strftime('%Y-%m-%d') }}</td>
-                                                <td>{{ record.timestamp.strftime('%H:%M') }}</td>
+                                                <td>{{ record.timestamp.strftime('%I:%M %p') }}</td>
                                                 <td>{{ record.poop_type }}</td>
                                             </tr>
                                         {% endfor %}
@@ -69,11 +69,15 @@
                                 </table>
                             </div>
                             {% set last_record = member.records|sort(attribute='timestamp')|last %}
-                            {% set days_since = ((now - last_record.timestamp).days) %}
-                            {% if days_since > 2 %}
-                                <div class="alert alert-warning">
-                                    ⚠️ Warning: {{ member.name }} hasn't had a record in {{ days_since }} days!
-                                </div>
+                            {% if last_record %}
+                            {% set days_since = ((now.replace(tzinfo=None) - last_record.timestamp.replace(tzinfo=None)).days) %}
+                                {% if days_since > 2 %}
+                                    <div class="alert alert-warning">
+                                        ⚠️ Warning: {{ member.name }} hasn't had a record in {{ days_since }} days!
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <p>No records yet.</p>
                             {% endif %}
                         {% else %}
                             <p>No records yet.</p>

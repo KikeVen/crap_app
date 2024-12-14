@@ -8,8 +8,9 @@ from flask_login import (
     login_required, logout_user, current_user
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 import os
+import pytz  # You may need to install this: pip install pytz
 
 
 app = Flask(__name__)
@@ -53,7 +54,7 @@ class FamilyMember(db.Model):
 
 class PoopRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     poop_type = db.Column(db.String(50))
     family_member_id = db.Column(
         db.Integer,
@@ -128,7 +129,7 @@ def logout():
 @login_required
 def dashboard():
     family_members = current_user.family_members
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     return render_template(
         'dashboard.html',
         family_members=family_members,
@@ -158,7 +159,13 @@ def record(member_id):
     if member.parent != current_user:
         flash('Access denied')
         return redirect(url_for('dashboard'))
-    now = datetime.utcnow()
+    
+    # Get your local timezone - replace 'America/New_York' with your timezone
+    local_tz = pytz.timezone('America/Caracas')  # America/New_York
+    
+    # Convert UTC time to local time
+    now = datetime.now(pytz.UTC).astimezone(local_tz)
+    
     if request.method == 'POST':
         poop_type = request.form.get('poop_type')
         date_str = request.form.get('date')
