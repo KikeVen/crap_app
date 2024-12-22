@@ -1,62 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 text-center">
-        <h1 class="display-4 mb-4">
-            <!-- <span class="poop-icon">💩</span> -->
-             <span class="poop-icon"></span>
-            <!-- <img class="responsive-img" style="height: 90px;" src="{{ url_for('static', filename='images/the_poopster.png') }}" alt="My Poop"> -->
-            Welcome!
-        </h1>
-        <p class="lead mb-4">
-            Track your family's stool habits with our fun and easy-to-use app!
-        </p>
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title mb-4">Get Started</h2>
-                <div class="d-grid gap-3 col-md-6 mx-auto">
-                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
-                        Login
-                    </a>
-                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">
-                        Register
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="mt-4">
-            <h3>Features</h3>
-            <div class="row mt-3">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h4>👨‍👩‍👧‍👦</h4>
-                            <h5>Family Profiles</h5>
-                            <p>Track multiple family members in one place</p>
+<div class="bg-image d-flex justify-content-end align-items-center" style="background-image: url('static/images/girl_sister_flowers.jpg');height: 60vh;
+background-size: cover;
+background-position: center center;">
+""
+    <div class="bg-image-overlay">
+        <div class="container-md-fluid p-4">
+            <div class="d-flex justify-content-end">
+                <div class="card opacity-75 text-center border-light shadow-lg w-100">
+                    <!-- <div class="card-header">
+                    <h1 class="display-6">Welcome to HealthyStool</h1>
+                </div> -->
+                    <div class="card-body">
+                        <h1 class="card-title">Welcome to HealthyStool</h1>
+                        <p class="lead">
+                            Empowering Digestive Harmony Through Personalized Stool Tracking.
+                        </p>
+                        <div class="vstack gap-2 col-md-5 mx-auto">
+                            <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-secondary">Register</a>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h4>📅</h4>
-                            <h5>Calendar View</h5>
-                            <p>See patterns at a glance</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h4>⚠️</h4>
-                            <h5>Health Alerts</h5>
-                            <p>Get notified of potential issues</p>
-                        </div>
+                        <!-- <a href="#" class="btn btn-outline-success" style="width: 150px;">Login</a>
+                    <a href="#" class="btn btn-outline-dark" style="width: 150px;">Register</a> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
+<div class="row">
+    <div class="col-12 col-md-4 p-2">
+        <div class="row g-0 bg-success-subtle position-relative" style="height: 220px;">
+            <div class="col-md-6 mb-md-0 p-md-4">
+                <img src="{{ url_for('static', filename='images/chicken-family.jpg') }}" style="height: 170px; object-fit: cover;" class="w-100" alt="...">
+            </div>
+            <div class="col-md-6 p-4 ps-md-0">
+                <h5 class="mt-0">Family Profiles</h5>
+                <p>Track everyone's digestive health in one secure place. Create individual profiles for each family member. Perfect for parents monitoring children's health or caregivers managing multiple family members.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4 p-2">
+        <div class="row g-0 bg-warning-subtle position-relative" style="height: 220px;">
+            <div class="col-md-6 mb-md-0 p-md-4">
+                <img src="{{ url_for('static', filename='images/cartoon-activity-calendar.jpg') }}" style="height: 170px; object-fit: cover;" class="w-100" alt="...">
+            </div>
+            <div class="col-md-6 p-4 ps-md-0">
+                <h5 class="mt-0">Calendar View</h5>
+                <p>Visualize your digestive health patterns with our intuitive calendar interface. Track consistency, timing, and related factors across days, weeks, or months. Identify trends and patterns at a glance, making it easier to spot changes.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4 p-2">
+        <div class="row g-0 bg-primary-subtle position-relative" style="height: 220px;">
+            <div class="col-md-6 mb-md-0 p-md-4">
+                <img src="{{ url_for('static', filename='images/caring-nurse-illustration.jpg') }}" style="height: 170px; object-fit: cover;" class="w-100" alt="...">
+            </div>
+            <div class="col-md-6 p-4 ps-md-0">
+                <h5 class="mt-0">Health Alerts</h5>
+                <p>Receive gentle reminders for tracking and thoughtful alerts when patterns change. Our smart system helps identify potential concerns early, enabling timely discussions with your healthcare provider.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

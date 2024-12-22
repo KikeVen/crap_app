@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+{% block sub_banner %}
+<img src="{{ url_for('static', filename='images/section_background_3.jpg') }}" class="card-img opacity-25" style="height: 30px; object-fit: cover;">
+{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">

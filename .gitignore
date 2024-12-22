@@ -1,6 +1,9 @@
 venv/
 __ignore/
 instance/
+templates_backup/
+.vscode/
 
 app_requirement.md
 .gitignore
+templates/navbar.html

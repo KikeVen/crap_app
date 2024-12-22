@@ -14,8 +14,11 @@ import pytz  # You may need to install this: pip install pytz
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///poop_tracker.db'
+app.config.update(
+    SECRET_KEY=os.urandom(24),
+    SQLALCHEMY_DATABASE_URI='sqlite:///poop_tracker.db',
+)
+
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -65,7 +68,7 @@ class PoopRecord(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 @app.route('/')
@@ -108,12 +111,17 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        print(f"Login attempt for email: {email}")  # Debug log
+
         user = User.query.filter_by(email=email).first()
+        print(f"User found: {user is not None}")  # Debug log
 
         if user and user.check_password(password):
+            print("Password check passed")  # Debug log
             login_user(user)
             return redirect(url_for('dashboard'))
 
+        print("Login failed")  # Debug log
         flash('Invalid email or password')
     return render_template('login.html')
 
@@ -159,13 +167,13 @@ def record(member_id):
     if member.parent != current_user:
         flash('Access denied')
         return redirect(url_for('dashboard'))
-    
+
     # Get your local timezone - replace 'America/New_York' with your timezone
     local_tz = pytz.timezone('America/Caracas')  # America/New_York
-    
+
     # Convert UTC time to local time
     now = datetime.now(pytz.UTC).astimezone(local_tz)
-    
+
     if request.method == 'POST':
         poop_type = request.form.get('poop_type')
         date_str = request.form.get('date')
@@ -193,5 +201,14 @@ def record(member_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+        try:
+            db.create_all()
+            print("Database created successfully!")
+        except Exception as e:
+            print(f"Error creating database: {e}")
+
+    app.run(
+        host='0.0.0.0',
+        port=5000,
+        debug=True,
+    )

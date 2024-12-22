@@ -1,38 +1,41 @@
 {% extends "base.html" %}
-
+{% block sub_banner %}
+<img src="{{ url_for('static', filename='images/section_background_3.jpg') }}" class="card-img opacity-25" style="height: 30px; object-fit: cover;">
+{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-4">
+        <div class="card opacity-75 text-center border-light shadow-lg w-100">
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">
-                    <span class="poop-icon">📝</span>
-                    Register
-                </h2>
+                <h2 class="display-6">HealthyStool Registration</h2>
                 <form method="POST" action="{{ url_for('register') }}" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required
-                               autocomplete="name">
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name" required autocomplete="name">
+                        </div>
                         <div class="invalid-feedback">
                             Please provide your name.
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" required
-                               autocomplete="email">
+                    <div class="row mb-3">
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="email" name="email" required
+                                autocomplete="email">
+                        </div>
                         <div class="form-text">We'll never share your email with anyone else.</div>
                         <div class="invalid-feedback">
                             Please provide a valid email address.
                         </div>
                     </div>
-                    <div class="mb-4">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required
-                               minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                               autocomplete="new-password"
-                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                    <div class="row mb-4">
+                        <label for="password" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" name="password" required
+                                minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" autocomplete="new-password"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                        </div>
                         <div class="form-text">
                             Password must be at least 8 characters long and include uppercase, lowercase, and numbers.
                         </div>
@@ -41,7 +44,8 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg py-2 fs-5 fw-semibold">
+                        <!-- <button type="submit" class="btn btn-primary btn-lg py-2 fs-5 fw-semibold"> -->
+                            <button type="submit" class="btn btn-primary">
                             Create Account
                         </button>
                     </div>
@@ -52,22 +56,23 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
-// Form validation
-(function () {
-    'use strict'
-    var forms = document.querySelectorAll('.needs-validation')
-    Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-            form.classList.add('was-validated')
-        }, false)
-    })
-})()
+    // Form validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
 </script>
 {% endblock %}

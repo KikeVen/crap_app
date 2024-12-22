@@ -95,7 +95,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [ ] Ability to edit and delete records
 - [ ] Ability to edit family members
 - [ ] UTC time support
-- [ ] New UI design and theme
+- [X] New UI design and theme
 - [ ] Calendar view of records
 - [ ] More detailed information on each stool type
 - [ ] Additional data visualizations (charts)
