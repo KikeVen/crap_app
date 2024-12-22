@@ -1,4 +1,6 @@
-# Family Poop Tracker
+# HealthyStool
+
+_Family Stool Tracker_
 
 A Flask-based web application designed to help parents monitor their family members' bowel movements using the Bristol Stool Scale. This tool is particularly useful for parents with children who have digestive issues or for those who need to report bowel movement patterns to healthcare providers.
 
