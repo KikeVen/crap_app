@@ -7,3 +7,5 @@ templates_backup/
 app_requirement.md
 .gitignore
 templates/navbar.html
+.clienrules
+new_base.html

@@ -66,7 +66,7 @@ flask db upgrade
 1. Run the application:
 
 ```bash
-python poop_app.py
+python stool_app.py
 ```
 
 The application will be available at `http://localhost:5000`
