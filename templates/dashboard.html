@@ -15,7 +15,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card">
+        <div class="card border-0 opacity-75">
             <div class="card-body">
                 <h3 class="card-title">Family Members</h3>
                 {% if family_members %}
@@ -46,7 +46,7 @@
     <div class="col-md-8">
         {% if family_members %}
         {% for member in family_members %}
-        <div class="card mb-4">
+        <div class="card border-0 opacity-75 mb-4">
             <div class="card-body">
                 <h4 class="card-title">{{ member.name }}'s Records</h4>
                 {% if member.records %}
