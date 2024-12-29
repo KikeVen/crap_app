@@ -1,0 +1,40 @@
+<div class="card border-0 opacity-75 mb-4">
+    <div class="card-body">
+        <h4 class="card-title">{{ member.name }}'s Records</h4>
+        {% if member.records %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in member.records %}
+                    <tr>
+                        <td>{{ record.timestamp.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ record.timestamp.strftime('%I:%M %p') }}</td>
+                        <td>{{ record.poop_type }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% set last_record = member.records|sort(attribute='timestamp')|last %}
+        {% if last_record %}
+        {% set days_since = ((now.replace(tzinfo=None) - last_record.timestamp.replace(tzinfo=None)).days) %}
+        {% if days_since > 2 %}
+        <div class="alert alert-warning">
+            ⚠️ Warning: {{ member.name }} hasn't had a record in {{ days_since }} days!
+        </div>
+        {% endif %}
+        {% else %}
+        <p>No records yet.</p>
+        {% endif %}
+        {% else %}
+        <p>No records yet.</p>
+        {% endif %}
+    </div>
+</div>

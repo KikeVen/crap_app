@@ -10,3 +10,4 @@ templates/navbar.html
 .clienrules
 new_base.html
 dashboard_update.md
+changelog.md

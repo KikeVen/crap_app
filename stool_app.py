@@ -7,6 +7,7 @@ from flask_login import (
     LoginManager, UserMixin, login_user,
     login_required, logout_user, current_user
 )
+from flask_htmx import HTMX
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 import os
@@ -14,6 +15,7 @@ import pytz  # You may need to install this: pip install pytz
 
 
 app = Flask(__name__)
+htmx = HTMX(app)
 app.config.update(
     SECRET_KEY=os.urandom(24),
     SQLALCHEMY_DATABASE_URI='sqlite:///poop_tracker.db',
@@ -141,6 +143,20 @@ def dashboard():
     return render_template(
         'dashboard.html',
         family_members=family_members,
+        now=now
+    )
+
+@app.route('/member-records/<int:member_id>')
+@login_required
+def get_member_records(member_id):
+    member = FamilyMember.query.get_or_404(member_id)
+    if member.parent != current_user:
+        return "Access denied", 403
+
+    now = datetime.now(timezone.utc)
+    return render_template(
+        'partials/member_records.html',
+        member=member,
         now=now
     )
 

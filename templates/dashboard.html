@@ -23,7 +23,13 @@
                 <ul class="list-group list-group-flush">
                     {% for member in family_members %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ member.name }}
+                        <a href="{{ url_for('get_member_records', member_id=member.id) }}"
+                           hx-get="{{ url_for('get_member_records', member_id=member.id) }}"
+                           hx-push-url="true"
+                           hx-target="#records-container"
+                           hx-swap="innerHTML">
+                            {{ member.name }}
+                        </a>
                         <div>
                             <a href="{{ url_for('record', member_id=member.id) }}" class="btn btn-sm btn-primary">
                                 Add Record
@@ -44,51 +50,8 @@
         </div>
     </div>
 
-    <div class="col-md-8">
-        {% if family_members %}
-        {% for member in family_members %}
-        <div class="card border-0 opacity-75 mb-4">
-            <div class="card-body">
-                <h4 class="card-title">{{ member.name }}'s Records</h4>
-                {% if member.records %}
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for record in member.records %}
-                            <tr>
-                                <td>{{ record.timestamp.strftime('%Y-%m-%d') }}</td>
-                                <td>{{ record.timestamp.strftime('%I:%M %p') }}</td>
-                                <td>{{ record.poop_type }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% set last_record = member.records|sort(attribute='timestamp')|last %}
-                {% if last_record %}
-                {% set days_since = ((now.replace(tzinfo=None) - last_record.timestamp.replace(tzinfo=None)).days) %}
-                {% if days_since > 2 %}
-                <div class="alert alert-warning">
-                    ⚠️ Warning: {{ member.name }} hasn't had a record in {{ days_since }} days!
-                </div>
-                {% endif %}
-                {% else %}
-                <p>No records yet.</p>
-                {% endif %}
-                {% else %}
-                <p>No records yet.</p>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-        {% endif %}
+    <div class="col-md-8" id="records-container">
+        <!-- Records will be loaded here via HTMX -->
     </div>
 
 </div>
