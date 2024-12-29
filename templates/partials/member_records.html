@@ -1,23 +1,60 @@
+{% macro relative_time(timestamp, now) %}
+    {% set diff = (now.replace(tzinfo=None) - timestamp.replace(tzinfo=None)) %}
+    {% if diff.days > 0 %}
+        ({{ diff.days }} day{% if diff.days > 1 %}s{% endif %} ago)
+    {% elif diff.seconds >= 3600 %}
+        ({{ (diff.seconds // 3600) }} hour{% if (diff.seconds // 3600) > 1 %}s{% endif %} ago)
+    {% elif diff.seconds >= 60 %}
+        ({{ (diff.seconds // 60) }} minute{% if (diff.seconds // 60) > 1 %}s{% endif %} ago)
+    {% else %}
+        (just now)
+    {% endif %}
+{% endmacro %}
+
 <div class="card border-0 opacity-75 mb-4">
     <div class="card-body">
         <h4 class="card-title">{{ member.name }}'s Records</h4>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text">Current Week</span>
+                    <input type="text" class="form-control" value="{{ now.strftime('%Y-%m-%d') }}" disabled>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <form class="row g-2" hx-get="{{ url_for('get_member_records', member_id=member.id) }}" hx-target="#records-container">
+                    <div class="col">
+                        <input type="date" class="form-control" name="start_date" placeholder="Start Date">
+                    </div>
+                    <div class="col">
+                        <input type="date" class="form-control" name="end_date" placeholder="End Date">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3 text-end">
+                <a href="{{ url_for('record', member_id=member.id) }}" class="btn btn-success">
+                    Add New Record
+                </a>
+            </div>
+        </div>
         {% if member.records %}
         <div class="table-responsive">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Type</th>
-                    </tr>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Type</th>
+                        </tr>
                 </thead>
                 <tbody>
                     {% for record in member.records %}
-                    <tr>
-                        <td>{{ record.timestamp.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ record.timestamp.strftime('%I:%M %p') }}</td>
-                        <td>{{ record.poop_type }}</td>
-                    </tr>
+                            <tr>
+                                <td>{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }} <span class="badge text-bg-light">{{ relative_time(record.timestamp, now) }}</span></td>
+                                <td>{{ record.poop_type }}</td>
+                            </tr>
                     {% endfor %}
                 </tbody>
             </table>
