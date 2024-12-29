@@ -152,13 +152,13 @@ def get_member_records(member_id):
     member = FamilyMember.query.get_or_404(member_id)
     if member.parent != current_user:
         return "Access denied", 403
-    
+
     now = datetime.now(timezone.utc)
-    
+
     # Handle date range filtering
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
-    
+
     query = PoopRecord.query.filter_by(family_member_id=member.id)
     if start_date:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
@@ -166,14 +166,32 @@ def get_member_records(member_id):
     if end_date:
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
         query = query.filter(PoopRecord.timestamp <= end_date)
-    
+
     member.records = query.order_by(PoopRecord.timestamp.desc()).all()
-    
+
     return render_template(
         'partials/member_records.html',
         member=member,
         now=now
     )
+
+
+@app.route('/remove-family-member/<int:member_id>', methods=['DELETE'])
+@login_required
+def remove_family_member(member_id):
+    member = FamilyMember.query.get_or_404(member_id)
+    if member.parent != current_user:
+        return "Access denied", 403
+
+    # Delete all associated records first
+    PoopRecord.query.filter_by(family_member_id=member.id).delete()
+
+    # Then delete the family member
+    db.session.delete(member)
+    db.session.commit()
+
+    # Return status 200
+    return '', 200
 
 
 @app.route('/add_family_member', methods=['GET', 'POST'])

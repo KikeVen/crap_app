@@ -4,6 +4,7 @@
     style="height: 30px; object-fit: cover;">
 {% endblock %}
 {% block content %}
+
 <div class="row">
     <div class="col-md-12">
         <h1 class="mb-4">
@@ -14,46 +15,48 @@
 </div>
 
 <div class="container">
-<div class="row">
-    <div class="col-md-4">
-        <div class="card border-0 opacity-75">
-            <div class="card-body">
-                <h3 class="card-title">Family Members</h3>
-                {% if family_members %}
-                <ul class="list-group list-group-flush">
-                    {% for member in family_members %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="#"
-                           hx-get="{{ url_for('get_member_records', member_id=member.id) }}"
-                           hx-target="#records-container"
-                           hx-swap="innerHTML"
-                           hx-trigger="click">
-                            {{ member.name }}
-                        </a>
-                        <div>
-                            <a href="{{ url_for('record', member_id=member.id) }}" class="btn btn-sm btn-primary">
-                                Add Record
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border-0 opacity-75">
+                <div class="card-body">
+                    <h3 class="card-title">Family Members</h3>
+                    {% if family_members %}
+                    <ul class="list-group list-group-flush">
+                        {% for member in family_members %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            id="member-{{ member.id }}">
+                            <a href="#" hx-get="{{ url_for('get_member_records', member_id=member.id) }}"
+                                hx-target="#records-container" hx-swap="innerHTML" hx-trigger="click">
+                                {{ member.name }}
                             </a>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>No family members added yet.</p>
-                {% endif %}
-                <div class="mt-3">
-                    <a href="{{ url_for('add_family_member') }}" class="btn btn-primary">
-                        Add Family Member
-                    </a>
+                            <div>
+                                <button class="btn btn-sm btn-danger"
+                                    hx-delete="{{ url_for('remove_family_member', member_id=member.id) }}"
+                                    hx-confirm="Are you sure you want to remove {{ member.name }} and all their records?"
+                                    hx-target="#member-{{ member.id }}" hx-swap="outerHTML">
+                                    Remove
+                                </button>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No family members added yet.</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <a href="{{ url_for('add_family_member') }}" class="btn btn-primary">
+                            Add Family Member
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-8" id="records-container">
-        <!-- Records will be loaded here via HTMX -->
-    </div>
+        <div class="col-md-8" id="records-container">
+            <!-- Records will be loaded here via HTMX -->
+        </div>
 
+    </div>
 </div>
-</div>
+
 {% endblock %}
