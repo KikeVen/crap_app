@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from flask import (
     Flask, render_template, request, redirect,
     url_for, flash
@@ -9,15 +11,15 @@ from flask_login import (
 )
 from flask_htmx import HTMX
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timezone
-import os
+from datetime import datetime, timezone, timedelta
 import pytz
 
+load_dotenv()
 
 app = Flask(__name__)
 htmx = HTMX(app)
 app.config.update(
-    SECRET_KEY=os.urandom(24),
+    SECRET_KEY=os.environ.get('SECRET_KEY'),
     SQLALCHEMY_DATABASE_URI='sqlite:///poop_tracker.db',
 )
 
@@ -159,13 +161,18 @@ def get_member_records(member_id):
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
+    # Default to last 7 days if no date range specified
     query = PoopRecord.query.filter_by(family_member_id=member.id)
-    if start_date:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d')
-        query = query.filter(PoopRecord.timestamp >= start_date)
-    if end_date:
-        end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        query = query.filter(PoopRecord.timestamp <= end_date)
+    if not start_date and not end_date:
+        seven_days_ago = now - timedelta(days=7)
+        query = query.filter(PoopRecord.timestamp >= seven_days_ago)
+    else:
+        if start_date:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            query = query.filter(PoopRecord.timestamp >= start_date)
+        if end_date:
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            query = query.filter(PoopRecord.timestamp <= end_date)
 
     member.records = query.order_by(PoopRecord.timestamp.desc()).all()
 

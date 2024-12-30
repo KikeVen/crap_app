@@ -11,3 +11,4 @@ templates/navbar.html
 new_base.html
 dashboard_update.md
 changelog.md
+.env

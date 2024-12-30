@@ -12,7 +12,7 @@
 {% endmacro %}
 <div class="card border-0 opacity-75 mb-4">
     <div class="card-body">
-        <h4 class="card-title">{{ member.name }}'s Records</h4>
+        <h4 class="card-title p-3">{{ member.name }}'s Records</h4>
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="input-group">
@@ -20,7 +20,7 @@
                     <input type="text" class="form-control" value="{{ now.strftime('%Y-%m-%d') }}" disabled>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 mb-3">
                 <form class="row g-2" hx-get="{{ url_for('get_member_records', member_id=member.id) }}" hx-target="#records-container">
                     <div class="col">
                         <input type="date" class="form-control" name="start_date" placeholder="Start Date">
@@ -40,6 +40,7 @@
             </div>
         </div>
         {% if member.records %}
+        <hr>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -52,9 +53,9 @@
                 <tbody>
                     {% for record in member.records %}
                             <tr id="record-{{ record.id }}">
-                                <td><small>{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}</small> <span class="badge text-bg-light">{{ relative_time(record.timestamp, now) }}</span></td>
+                                <td><span class="badge text-bg-light" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}">{{ relative_time(record.timestamp, now) }}</span></td>
                                 {% if '1' in record.poop_type %}
-                                <td><span class="badge text-bg-danger custom-badge"  data-bs-toggle="tooltip" data-bs-placement="top" title="Very Constipated">{{ record.poop_type }}</span></td>
+                                <td><span class="badge text-bg-danger custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Very Constipated">{{ record.poop_type }}</span></td>
                                 {% elif '2' in record.poop_type %}
                                 <td><span class="badge text-bg-warning custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Slightly Constipated">{{ record.poop_type }}</span></td>
                                 {% elif '3' in record.poop_type %}
@@ -76,7 +77,7 @@
                                         hx-confirm="Are you sure you want to remove record for: {{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}?"
                                         hx-target="#record-{{ record.id }}"
                                         hx-swap="outerHTML">
-                                        Delete
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -99,5 +100,4 @@
         <p>No records yet.</p>
         {% endif %}
     </div>
-
 </div>
