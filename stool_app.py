@@ -11,7 +11,7 @@ from flask_htmx import HTMX
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 import os
-import pytz  # You may need to install this: pip install pytz
+import pytz
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ app.config.update(
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login' # type: ignore
+login_manager.login_view = 'login'  # type: ignore
 
 
 class User(UserMixin, db.Model):
@@ -174,6 +174,18 @@ def get_member_records(member_id):
         member=member,
         now=now
     )
+
+
+@app.route('/delete-record/<int:record_id>', methods=['DELETE'])
+@login_required
+def delete_record(record_id):
+    record = PoopRecord.query.get_or_404(record_id)
+    if record.family_member.parent != current_user:
+        return "Access denied", 403
+
+    db.session.delete(record)
+    db.session.commit()
+    return '', 200
 
 
 @app.route('/remove-family-member/<int:member_id>', methods=['DELETE'])

@@ -10,7 +10,6 @@
         (just now)
     {% endif %}
 {% endmacro %}
-
 <div class="card border-0 opacity-75 mb-4">
     <div class="card-body">
         <h4 class="card-title">{{ member.name }}'s Records</h4>
@@ -47,13 +46,39 @@
                         <tr>
                             <th>Date & Time</th>
                             <th>Type</th>
+                            <th>Actions</th>
                         </tr>
                 </thead>
                 <tbody>
                     {% for record in member.records %}
-                            <tr>
-                                <td>{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }} <span class="badge text-bg-light">{{ relative_time(record.timestamp, now) }}</span></td>
-                                <td>{{ record.poop_type }}</td>
+                            <tr id="record-{{ record.id }}">
+                                <td><small>{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}</small> <span class="badge text-bg-light">{{ relative_time(record.timestamp, now) }}</span></td>
+                                {% if '1' in record.poop_type %}
+                                <td><span class="badge text-bg-danger custom-badge"  data-bs-toggle="tooltip" data-bs-placement="top" title="Very Constipated">{{ record.poop_type }}</span></td>
+                                {% elif '2' in record.poop_type %}
+                                <td><span class="badge text-bg-warning custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Slightly Constipated">{{ record.poop_type }}</span></td>
+                                {% elif '3' in record.poop_type %}
+                                <td><span class="badge text-bg-success custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Normal">{{ record.poop_type }}</span></td>
+                                {% elif '4' in record.poop_type %}
+                                <td><span class="badge text-bg-success custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Normal">{{ record.poop_type }}</span></td>
+                                {% elif '5' in record.poop_type %}
+                                <td><span class="badge text-bg-info custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Lack of Fiber">{{ record.poop_type }}</span></td>
+                                {% elif '6' in record.poop_type %}
+                                <td><span class="badge text-bg-warning custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Inflamantion">{{ record.poop_type }}</span></td>
+                                {% elif '7' in record.poop_type %}
+                                <td><span class="badge text-bg-danger custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Inflamantion and Diarrhea">{{ record.poop_type }}</span></td>
+                                {% else %}
+                                <td><span class="badge text-bg-ligh custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Contact support">{{ record.poop_type }}</span></td>
+                                {% endif %}
+                                <td>
+                                    <button class="btn btn-danger btn-sm"
+                                        hx-delete="{{ url_for('delete_record', record_id=record.id) }}"
+                                        hx-confirm="Are you sure you want to remove record for: {{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}?"
+                                        hx-target="#record-{{ record.id }}"
+                                        hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                     {% endfor %}
                 </tbody>
@@ -74,4 +99,8 @@
         <p>No records yet.</p>
         {% endif %}
     </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="This is a tooltip!">
+        Hover over me
+      </button>
+      
 </div>
