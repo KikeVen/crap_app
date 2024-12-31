@@ -11,8 +11,9 @@ from flask_login import (
 )
 from flask_htmx import HTMX
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 import pytz
+from utils import get_timezone
 
 load_dotenv()
 
@@ -22,11 +23,27 @@ app.config.update(
     SECRET_KEY=os.environ.get('SECRET_KEY'),
     SQLALCHEMY_DATABASE_URI='sqlite:///poop_tracker.db',
 )
-
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # type: ignore
+
+
+def now_tz():
+    tz = get_timezone()
+    return datetime.now(tz)
+
+
+@app.template_filter('localtime')
+def localtime_filter(dt):
+    if not isinstance(dt, datetime):
+        return ''
+    local_tz = get_timezone()
+    # Ensure dt has timezone info before conversion
+    if dt.tzinfo is None:
+        dt = pytz.UTC.localize(dt)
+    local_dt = dt.astimezone(local_tz)
+    return local_dt.strftime('%Y-%m-%d %I:%M %p')
 
 
 class User(UserMixin, db.Model):
@@ -61,13 +78,20 @@ class FamilyMember(db.Model):
 
 class PoopRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    timestamp = db.Column(db.DateTime, nullable=False, default=lambda: now_tz())
     poop_type = db.Column(db.String(50))
     family_member_id = db.Column(
         db.Integer,
         db.ForeignKey('family_member.id'),
         nullable=False
     )
+
+    @property
+    def timestamp_tz(self):
+        """Return timezone-aware timestamp"""
+        if self.timestamp.tzinfo is None:
+            return pytz.UTC.localize(self.timestamp)
+        return self.timestamp
 
 
 @login_manager.user_loader
@@ -141,7 +165,7 @@ def logout():
 @login_required
 def dashboard():
     family_members = current_user.family_members
-    now = datetime.now(timezone.utc)
+    now = now_tz()
     return render_template(
         'dashboard.html',
         family_members=family_members,
@@ -155,24 +179,29 @@ def get_member_records(member_id):
     if member.parent != current_user:
         return "Access denied", 403
 
-    now = datetime.now(timezone.utc)
+    now = now_tz()  # This is already timezone-aware
 
     # Handle date range filtering
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
-    # Default to last 7 days if no date range specified
     query = PoopRecord.query.filter_by(family_member_id=member.id)
+    
     if not start_date and not end_date:
         seven_days_ago = now - timedelta(days=7)
         query = query.filter(PoopRecord.timestamp >= seven_days_ago)
     else:
+        local_tz = get_timezone()
         if start_date:
-            start_date = datetime.strptime(start_date, '%Y-%m-%d')
-            query = query.filter(PoopRecord.timestamp >= start_date)
+            start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+            start_dt = local_tz.localize(start_dt)
+            query = query.filter(PoopRecord.timestamp >= start_dt)
         if end_date:
-            end_date = datetime.strptime(end_date, '%Y-%m-%d')
-            query = query.filter(PoopRecord.timestamp <= end_date)
+            end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+            # Set time to end of day for the end date
+            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            end_dt = local_tz.localize(end_dt)
+            query = query.filter(PoopRecord.timestamp <= end_dt)
 
     member.records = query.order_by(PoopRecord.timestamp.desc()).all()
 
@@ -236,11 +265,8 @@ def record(member_id):
         flash('Access denied')
         return redirect(url_for('dashboard'))
 
-    # Get your local timezone - replace 'America/New_York' with your timezone
-    local_tz = pytz.timezone('America/Caracas')  # America/New_York
-
-    # Convert UTC time to local time
-    now = datetime.now(pytz.UTC).astimezone(local_tz)
+    local_tz = get_timezone()
+    now = now_tz()
 
     if request.method == 'POST':
         poop_type = request.form.get('poop_type')
@@ -250,14 +276,25 @@ def record(member_id):
         if poop_type and date_str and time_str:
             try:
                 timestamp_str = f"{date_str} {time_str}"
-                timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M')
+                # timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M')
+                # timestamp = local_tz.localize(timestamp).astimezone(pytz.UTC)
+                naive_timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M')
+                # Localize the naive datetime to the local timezone
+                local_timestamp = local_tz.localize(naive_timestamp)
+                # Convert local time to UTC
+                utc_timestamp = local_timestamp.astimezone(pytz.UTC)
                 record = PoopRecord(
                     poop_type=poop_type,
                     family_member=member,
-                    timestamp=timestamp
+                    timestamp=utc_timestamp,
                 )
                 db.session.add(record)
                 db.session.commit()
+                print(f"now: {timestamp_str}")
+                print(f"Naive timestamp: {naive_timestamp}")
+                print(f"Local timestamp: {local_timestamp}")
+                print(f"UTC timestamp: {utc_timestamp}")
+
                 flash('Record added successfully')
                 return redirect(url_for('dashboard'))
             except ValueError:

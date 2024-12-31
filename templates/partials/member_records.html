@@ -1,5 +1,6 @@
 {% macro relative_time(timestamp, now) %}
-    {% set diff = (now.replace(tzinfo=None) - timestamp.replace(tzinfo=None)) %}
+    {# Convert both timestamps to UTC for comparison #}
+    {% set diff = (now - timestamp) %}
     {% if diff.days > 0 %}
         ({{ diff.days }} day{% if diff.days > 1 %}s{% endif %} ago)
     {% elif diff.seconds >= 3600 %}
@@ -53,7 +54,7 @@
                 <tbody>
                     {% for record in member.records %}
                             <tr id="record-{{ record.id }}">
-                                <td><span class="badge text-bg-light" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}">{{ relative_time(record.timestamp, now) }}</span></td>
+                                <td><span class="badge text-bg-light" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ record.timestamp_tz|localtime }}">{{ relative_time(record.timestamp_tz, now) }}</span></td>
                                 {% if '1' in record.poop_type %}
                                 <td><span class="badge text-bg-danger custom-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="Very Constipated">{{ record.poop_type }}</span></td>
                                 {% elif '2' in record.poop_type %}
