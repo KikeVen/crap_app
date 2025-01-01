@@ -94,12 +94,12 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Todo
 
-- [ ] Ability to edit and delete records
-- [ ] Ability to edit family members
-- [ ] UTC time support
+- [x] Ability to edit and delete records
+- [x] Ability to edit family members
+- [x] UTC time support
 - [X] New UI design and theme
 - [ ] Calendar view of records
-- [ ] More detailed information on each stool type
+- [x] More detailed information on each stool type
 - [ ] Additional data visualizations (charts)
 - [ ] Ability to export records as CSV, PDF
 - [ ] Forgot password functionality
