@@ -75,7 +75,7 @@
                                 <td>
                                     <button class="btn btn-danger btn-sm"
                                         hx-delete="{{ url_for('delete_record', record_id=record.id) }}"
-                                        hx-confirm="Are you sure you want to remove record for: {{ record.timestamp.strftime('%Y-%m-%d %I:%M %p') }}?"
+                                        hx-confirm="Are you sure you want to remove record for: {{ record.timestamp_tz|localtime }}?"
                                         hx-target="#record-{{ record.id }}"
                                         hx-swap="outerHTML">
                                         <i class="bi bi-trash"></i>

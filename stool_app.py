@@ -186,7 +186,7 @@ def get_member_records(member_id):
     end_date = request.args.get('end_date')
 
     query = PoopRecord.query.filter_by(family_member_id=member.id)
-    
+
     if not start_date and not end_date:
         seven_days_ago = now - timedelta(days=7)
         query = query.filter(PoopRecord.timestamp >= seven_days_ago)
@@ -276,10 +276,7 @@ def record(member_id):
         if poop_type and date_str and time_str:
             try:
                 timestamp_str = f"{date_str} {time_str}"
-                # timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M')
-                # timestamp = local_tz.localize(timestamp).astimezone(pytz.UTC)
                 naive_timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M')
-                # Localize the naive datetime to the local timezone
                 local_timestamp = local_tz.localize(naive_timestamp)
                 # Convert local time to UTC
                 utc_timestamp = local_timestamp.astimezone(pytz.UTC)
@@ -290,10 +287,6 @@ def record(member_id):
                 )
                 db.session.add(record)
                 db.session.commit()
-                print(f"now: {timestamp_str}")
-                print(f"Naive timestamp: {naive_timestamp}")
-                print(f"Local timestamp: {local_timestamp}")
-                print(f"UTC timestamp: {utc_timestamp}")
 
                 flash('Record added successfully')
                 return redirect(url_for('dashboard'))
