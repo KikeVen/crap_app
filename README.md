@@ -4,6 +4,8 @@ _Family Stool Tracker_
 
 A Flask-based web application designed to help parents monitor their family members' bowel movements using the Bristol Stool Scale. This tool is particularly useful for parents with children who have digestive issues or for those who need to report bowel movement patterns to healthcare providers.
 
+![home page](homepage.jpg)
+
 ## About the Bristol Stool Scale
 
 The Bristol Stool Scale is a medical aid designed to classify feces into seven groups. It was developed by Heaton and Lewis at the University of Bristol and was first published in the Scandinavian Journal of Gastroenterology in 1997.
@@ -30,7 +32,7 @@ The Bristol Stool Scale is a medical aid designed to classify feces into seven g
 - **Backend**: Python Flask
 - **Database**: SQLite with SQLAlchemy ORM
 - **Authentication**: Flask-Login
-- **Frontend**: HTML, CSS (Bootstrap DCN)
+- **Frontend**: HTML, CSS (Bootstrap DCN), HTMX
 - **Time Management**: PyTZ for timezone handling
 
 ## Installation
@@ -82,10 +84,12 @@ The application will be available at `http://localhost:5000`
 
 ## Configuration
 
-The application uses SQLite by default. To modify the timezone, update the following line in `poop_app.py`:
+The application uses SQLite by default. To modify the timezone, create a `.env` file in the root directory and add the following variables:
 
 ```python
-local_tz = pytz.timezone('America/Caracas')  # Change to your timezone
+# .env
+SECRET_KEY=my_super_secret_key
+TIMEZONE=America/Boston
 ```
 
 ## Contributing
